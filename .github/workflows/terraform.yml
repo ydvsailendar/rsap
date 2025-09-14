@@ -65,12 +65,13 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan \
-          -var="environment=${{ env.ENVIRONMENT }}" \
-          -var="project=rsap" \
-          -var="location=uksouth" \
-          -var="cost_center=rsap001" \
-          -var="owner=iamrootnexus"
+        run: |
+          terraform plan -out=tfplan \
+            -var="environment=${{ env.ENVIRONMENT }}" \
+            -var="project=rsap" \
+            -var="location=uksouth" \
+            -var="cost_center=rsap001" \
+            -var="owner=iamrootnexus"
 
       - name: Manual Approval (for dev/qa/prod)
         # if: env.ENVIRONMENT == 'qa' || env.ENVIRONMENT == 'prod'
