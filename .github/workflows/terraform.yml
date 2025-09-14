@@ -65,12 +65,6 @@ jobs:
             -var="cost_center=rsap001" \
             -var="owner=iamrootnexus"
 
-      - name: Manual Approval (for dev/qa/prod)
-        # if: env.ENVIRONMENT == 'qa' || env.ENVIRONMENT == 'prod'
-        uses: hmarr/auto-approve-action@v2
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Terraform Apply
         if: github.event_name == 'push' || env.ACTION == 'apply'
         run: terraform apply -auto-approve tfplan
