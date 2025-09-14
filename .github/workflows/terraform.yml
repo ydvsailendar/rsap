@@ -1,0 +1,85 @@
+name: Terraform Azure CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment (dev, qa, prod)"
+        required: true
+        type: choice
+        default: "dev"
+        options:
+          - dev
+          - qa
+          - prod
+      action:
+        description: "Terraform Action (apply, destroy)"
+        required: true
+        type: choice
+        default: "apply"
+        options:
+          - apply
+          - destroy
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    env:
+      ENVIRONMENT: ${{ github.event.inputs.environment }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.8.5
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Azure CLI script
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az account show
+
+      - name: Terraform Init
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=${{ var.TF_STATE_RESOURCE_GROUP }}" \
+            -backend-config="storage_account_name=${{ var.TF_STATE_STORAGE_ACCOUNT }}" \
+            -backend-config="container_name=${{ var.TF_STATE_CONTAINER }}" \
+            -backend-config="key=${{ vars.TF_STATE_KEY }}"
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan \
+          -var="environment=${{ env.ENVIRONMENT }}" \
+          -var="project=rsap" \
+          -var="location=uksouth" \
+          -var="cost_center=rsap001" \
+          -var="owner=iamrootnexus"
+
+      - name: Manual Approval (for dev/qa/prod)
+        # if: env.ENVIRONMENT == 'qa' || env.ENVIRONMENT == 'prod'
+        uses: hmarr/auto-approve-action@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Terraform Apply
+        if: github.event_name == 'push' || github.event.inputs.action == 'apply'
+        run: terraform apply -auto-approve tfplan
+
+      - name: Terraform Destroy
+        if: github.event.inputs.action == 'destroy'
+        run: terraform destroy -auto-approve
