@@ -1,6 +1,6 @@
 # README
 
-_*To be followed after pre-requisite is completed (prerequisite.sh)*_
+_*To be followed after pre-requisite is completed (scripts/prerequisite.sh)*_
 
 ## Github Secrets for TF Deployment
 
@@ -16,7 +16,7 @@ _*To be followed after pre-requisite is completed (prerequisite.sh)*_
     - `ARM_SUBSCRIPTION_ID` -> `SubscriptionId`
     - `ARM_TENANT_ID` -> `TenantId`
 
-![Alt "Github Environment Secrets Az Login SP"](./images/gh-env-secrets-for-tf-az-providers.png)
+![Alt "Github Environment Secrets Az Login SP"](../images/gh-env-secrets-for-tf-az-providers.png)
 
 - Add Environment Specific backend configuration as shown below:
     - `TF_STATE_RESOURCE_GROUP`
@@ -24,4 +24,4 @@ _*To be followed after pre-requisite is completed (prerequisite.sh)*_
     - `TF_STATE_CONTAINER`
     - `TF_STATE_KEY`
 
-![Alt "Github Environment Variables TF State"](./images/gh-env-variables-for-tf-state.png)
+![Alt "Github Environment Variables TF State"](../images/gh-env-variables-for-tf-state.png)

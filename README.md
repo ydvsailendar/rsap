@@ -2,9 +2,9 @@
 
 ## Pre Requisites
 
-- Complete the scripts on the prerequisite.sh Script to create service principal, assign contributor permission and create resource group
+- Complete the scripts on the `scripts/prerequisite.sh` Script to create service principal, assign contributor permission and create resource group
 
-- [Github Environment Secrets for Terraform Az Login and Backend Configuration](./GITHUB.md)
+- [Github Environment Secrets for Terraform Az Login and Backend Configuration](./docs/GITHUB.md)
 
 *_(SubscriptionNotFound) Subscription 14b6fd70-5636-4b56-8955-2193a160342b was not found.
 Code: SubscriptionNotFound
@@ -12,4 +12,4 @@ Message: Subscription 14b6fd70-5636-4b56-8955-2193a160342b was not found. --> to
 
 ## Cleanup
 
-- Complete the scripts on the clean.sh to delete manually created resources.
+- Complete the scripts on the `scripts/clean.sh` to delete manually created resources.
