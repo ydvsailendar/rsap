@@ -4,25 +4,19 @@ _*To be followed after pre-requisite is completed (prerequisite.sh)*_
 
 ## Github Secrets for TF Deployment
 
-- Ref: [Az Login](https://github.com/marketplace/actions/azure-login)
+- `appId` and `password` found on the response of create service principal step
+- `SubscriptionId` and `TenantId` can be found as response of below command
+    ```bash
+    az account list --output table
+    ```
 
-- Add the `AZURE_CREDENTIALS` in github actions environemnt specific secrets in json format as shown below
-```json
-{
-    "clientSecret":  "******",
-    "subscriptionId":  "******",
-    "tenantId":  "******",
-    "clientId":  "******"
-}
-```
+- Add Environment Specific ARM Secrets as shown below:
+    - `ARM_CLIENT_ID` -> `appId`
+    - `ARM_CLIENT_SECRET` -> `password`
+    - `ARM_SUBSCRIPTION_ID` -> `SubscriptionId`
+    - `ARM_TENANT_ID` -> `TenantId`
 
-- Where `clientSecret` is `password` && `clientId` is `appId` from the `create service principal` step
-- if you are new to azure you can get the `tenant_id` and `subscription_id` using the az cli or the portal
-```bash
-az account list --output table
-```
-
-![Alt "Github Environment Secrets Az Login SP"](./images/gh-env-secrets-for-tf-az-sp-login.png)
+![Alt "Github Environment Secrets Az Login SP"](./images/gh-env-secrets-for-tf-az-providers.png)
 
 - Add Environment Specific backend configuration as shown below:
     - `TF_STATE_RESOURCE_GROUP`

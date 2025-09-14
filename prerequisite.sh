@@ -13,7 +13,7 @@ az group create --name <resource_group_name> --location <location>
 # NOTE: app_id comes from response of create service principal step as appId
 
 # add contributor role permission to the service prinicipal on resource_group scope
-az role assignment create --assignee <app_id> --role Contributor --scope /subscriptions/<subscription_id>/resourceGroups/<resource_group_name>
+az role assignment create --assignee <app_id> --role Owner --scope /subscriptions/<subscription_id>
 
 # validate role is assignment as expected
 az role assignment list --assignee <app_id> --all --output table
