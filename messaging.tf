@@ -1,7 +1,7 @@
 resource "azurerm_eventhub_namespace" "ehns" {
   name                = "sa-${var.project}-ehns-${var.environment}"
   location            = var.location
-  resource_group_name = data.azurerm_resource_group.rg.name
+  resource_group_name = resource.azurerm_resource_group.rg.name
   sku                 = "Standard"
   capacity            = 1
 }
