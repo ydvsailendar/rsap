@@ -28,7 +28,8 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
     env:
-      ENVIRONMENT: ${{ github.event.inputs.environment }}
+      ENVIRONMENT: ${{ github.event.inputs.environment || 'dev' }}
+      ACTION: ${{ github.event.inputs.action || 'apply' }}
 
     steps:
       - name: Checkout repo
@@ -37,7 +38,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.8.5
+          terraform_version: 1.13.2
 
       - name: Azure Login
         uses: azure/login@v2
@@ -77,9 +78,9 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Terraform Apply
-        if: github.event_name == 'push' || github.event.inputs.action == 'apply'
+        if: github.event_name == 'push' || env.ACTION == 'apply'
         run: terraform apply -auto-approve tfplan
 
       - name: Terraform Destroy
-        if: github.event.inputs.action == 'destroy'
+        if: env.ACTION == 'destroy'
         run: terraform destroy -auto-approve
